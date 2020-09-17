@@ -26,7 +26,7 @@ export class FakeDatabaseService {
   }
 
   private generateProducts(): Product[] {
-    const productCount: number = faker.random.number(100);
+    const productCount: number = faker.random.number(100) || 1;
     const products: Product[] = [];
     for (let i = 0; i < productCount; i++) {
       products.push({

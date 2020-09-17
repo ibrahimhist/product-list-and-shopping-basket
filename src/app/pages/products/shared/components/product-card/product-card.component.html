@@ -10,6 +10,6 @@
   </mat-card-content>
   <mat-card-actions class="app-product-card__actions">
     <button [disabled]="product.quantity === 0" mat-raised-button color="primary"
-      (click)="onClickAddToBasket($event)">Sepete Ekle</button>
+      (click)="onClickAddToBasket($event)">{{product.quantity !== 0 ? 'Sepete Ekle' : 'Tükendi'}}</button>
   </mat-card-actions>
 </mat-card>

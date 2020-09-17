@@ -45,7 +45,11 @@ export class ProductsMainComponent implements OnInit {
           duration: 2000,
         });
       },
-      error: () => {},
+      error: (errorText) => {
+        this.snackBar.open(errorText, 'Kapat', {
+          duration: 2000,
+        });
+      },
     });
   }
 }

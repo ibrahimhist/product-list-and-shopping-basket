@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Product } from 'src/app/pages/products/shared/models/product.model';
 import { FakeDatabaseService } from './fake-database.service';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/internal/operators';
 
 import * as faker from 'faker/locale/tr';
@@ -27,7 +27,7 @@ export class FakeApiService {
   ): Observable<{
     count: number;
   }> {
-    let finalQuatity = 0;
+    let finalWholeProductsQuatity = 0;
 
     const addedProducts: {
       id: string;
@@ -37,7 +37,11 @@ export class FakeApiService {
     const foundProduct = addedProducts.find((x) => x.id === product.id);
 
     if (foundProduct) {
-      foundProduct.quatity += quatity;
+      if (foundProduct.quatity + quatity > 25) {
+        return throwError('Maksimum limite ulaştınız.');
+      } else {
+        foundProduct.quatity += quatity;
+      }
     } else {
       addedProducts.push({
         id: product.id,
@@ -45,9 +49,10 @@ export class FakeApiService {
       });
     }
 
-    finalQuatity = addedProducts
+    finalWholeProductsQuatity = addedProducts
       .map((x) => x.quatity)
       .reduce((accumulator, currentValue) => accumulator + currentValue);
-    return of({ count: finalQuatity });
+
+    return of({ count: finalWholeProductsQuatity });
   }
 }
