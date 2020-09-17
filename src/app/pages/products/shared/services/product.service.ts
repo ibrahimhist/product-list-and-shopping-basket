@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+import { FakeApiService } from 'src/app/shared/services/fake-api.service';
+import { Product } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor() {}
+  constructor(private fakeApiService: FakeApiService) {}
 
-  addToShoppingBasket(quantity: number = 1): void {}
+  getProductList(): Observable<Product[]> {
+    return this.fakeApiService.getProductList();
+  }
 }

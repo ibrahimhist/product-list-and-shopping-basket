@@ -1,11 +1,12 @@
 <div class="app-products-main">
   <h1 class="app-products-main__header">Süper Fiyat, Süper Teklif</h1>
 
-
   <div class="app-products-main__product-list-container">
-    <app-product-list [productList]="productListExample" [callbackFunForAddingBasket]="callbackFunForAddingBasket">
+    <app-product-list
+      *ngIf="productListExample"
+      [productList]="productListExample"
+      [callbackFunForAddingBasket]="callbackFunForAddingBasket"
+    >
     </app-product-list>
   </div>
-
-
 </div>

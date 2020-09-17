@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Product } from '../../shared/models/product.model';
+import { ProductService } from '../../shared/services/product.service';
 
 @Component({
   selector: 'app-products-main',
@@ -9,28 +10,27 @@ import { Product } from '../../shared/models/product.model';
 })
 export class ProductsMainComponent implements OnInit {
   productExample: Product;
-  productListExample: Product[] = [];
+  productListExample: Product[];
 
   callbackFunForAddingBasket: (product: Product) => void;
 
-  constructor(private _snackBar: MatSnackBar) {
-    this.productExample = {
-      id: '1',
-      title: 'Aptamil 7 Tahıllı Ballı 250 G',
-      imageUrl:
-        'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05046981/05046981-7b197a.jpg',
-      price: 21.9,
-      quantity: 10,
-    };
-
-    this.productListExample.push(this.productExample);
-    this.productListExample.push(...this.productListExample);
-    this.productListExample.push(...this.productListExample);
-    this.productListExample.push(...this.productListExample);
-    this.productListExample.push(...this.productListExample);
-
+  constructor(
+    private snackBar: MatSnackBar,
+    private productService: ProductService
+  ) {
     this.callbackFunForAddingBasket = (product: Product) =>
       this.onClickAddBasket(product);
+
+    this.getProductList();
+  }
+
+  getProductList(): void {
+    this.productService.getProductList().subscribe({
+      next: (productList: Product[]) => {
+        this.productListExample = productList;
+      },
+      error: () => {},
+    });
   }
 
   ngOnInit(): void {}
@@ -39,6 +39,6 @@ export class ProductsMainComponent implements OnInit {
     console.log(product);
     console.log(this.productExample);
 
-    this._snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat');
+    this.snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat');
   }
 }
