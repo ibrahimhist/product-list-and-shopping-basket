@@ -7,6 +7,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/internal/operators';
 
 import * as faker from 'faker/locale/tr';
+import { ShoppingBasketProduct } from '@app/pages/shopping-basket/shared/models/shopping-basket-product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,30 @@ export class FakeApiService {
       .pipe
       // delay(faker.random.number(3000))
       ();
+  }
+
+  getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
+    const addedProducts: {
+      id: string;
+      quatity: number;
+    }[] = this.fakeDatabaseService.database.addedToBasketProducts;
+
+    const shoppingBasketProductList: ShoppingBasketProduct[] = [];
+    addedProducts.forEach((addedProduct) => {
+      const foundProduct = this.fakeDatabaseService.database.products.find(
+        (x) => x.id === addedProduct.id
+      );
+
+      if (foundProduct) {
+        shoppingBasketProductList.push({
+          ...foundProduct,
+          requestedQantity: addedProduct.quatity,
+          shipmmentDate: 'Yarın kargoda',
+        });
+      }
+    });
+
+    return of(shoppingBasketProductList);
   }
 
   addToBasket(
