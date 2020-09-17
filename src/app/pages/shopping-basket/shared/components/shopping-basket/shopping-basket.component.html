@@ -2,11 +2,14 @@
   <mat-card-header>
     <mat-card-title>Sepetim</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
-    <app-shopping-basket-item></app-shopping-basket-item>
+  <mat-card-content *ngIf="shoppingBasketProductList">
+    <app-shopping-basket-item *ngFor="let shoppingBasketProduct of shoppingBasketProductList"
+      [shoppingBasketProduct]="shoppingBasketProduct" (clickedAddOne)="onClickedAddOne($event)"
+      (clickedDeleteOne)="onClickedDeleteOne($event)" (clickedClear)="onClickedClear($event)">
+    </app-shopping-basket-item>
   </mat-card-content>
 
   <mat-card-actions class="app-product-card__actions">
-    <button mat-raised-button>Alışverişe Devam Et</button>
+    <button mat-button (click)="onClickContinueToShopping($event)">Alışverişe Devam Et</button>
   </mat-card-actions>
 </mat-card>

@@ -50,10 +50,8 @@ export class FakeApiService {
     product: Product,
     quatity: number = 1
   ): Observable<{
-    count: number;
+    basketProductCount: number;
   }> {
-    let finalWholeProductsQuatity = 0;
-
     const addedProducts: {
       id: string;
       quatity: number;
@@ -74,10 +72,51 @@ export class FakeApiService {
       });
     }
 
-    finalWholeProductsQuatity = addedProducts
-      .map((x) => x.quatity)
-      .reduce((accumulator, currentValue) => accumulator + currentValue);
+    return of({ basketProductCount: addedProducts.length });
+  }
 
-    return of({ count: finalWholeProductsQuatity });
+  changeBasketRuqestedQuantity(
+    id: string,
+    quantity: number
+  ): Observable<{
+    quantity: number;
+  }> {
+    const foundProduct = this.fakeDatabaseService.database.products.find(
+      (x) => x.id === id
+    );
+
+    if (!foundProduct) {
+      return throwError('Ürün bulunmamaktadır.');
+    } else {
+      if (quantity > 25) {
+        return throwError('Maksimum limite ulaştınız.');
+      } else {
+        foundProduct.quantity = quantity;
+      }
+    }
+
+    return of({
+      quantity,
+    });
+  }
+
+  clearProductFromBasket(id: string) {
+    const foundProductIndex = this.fakeDatabaseService.database.addedToBasketProducts.findIndex(
+      (x) => x.id === id
+    );
+
+    if (foundProductIndex === -1) {
+      return throwError('Ürün bulunmamaktadır.');
+    } else {
+      this.fakeDatabaseService.database.addedToBasketProducts.splice(
+        foundProductIndex,
+        1
+      );
+    }
+
+    return of({
+      basketProductCount: this.fakeDatabaseService.database
+        .addedToBasketProducts.length,
+    });
   }
 }

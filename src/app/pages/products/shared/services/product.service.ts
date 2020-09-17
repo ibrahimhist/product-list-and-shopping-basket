@@ -23,11 +23,11 @@ export class ProductService {
     product: Product,
     quatity: number = 1
   ): Observable<{
-    count: number;
+    basketProductCount: number;
   }> {
     return this.fakeApiService.addToBasket(product).pipe(
       map((x) => {
-        this.headerService.setShoppingBasketProductCount(x.count);
+        this.headerService.setShoppingBasketProductCount(x.basketProductCount);
         return x;
       })
     );

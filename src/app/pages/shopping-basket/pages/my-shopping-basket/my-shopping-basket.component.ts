@@ -27,6 +27,18 @@ export class MyShoppingBasketComponent {
       next: (response: ShoppingBasketProduct[]) => {
         this.myAddedProducts = response || [];
         console.log(this.myAddedProducts);
+        // this.myAddedProducts = [
+        //   {
+        //     id: 'd99cd658-a466-4af1-95b1-f1ece9bc14d7',
+        //     imageUrl:
+        //       'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05046981/05046981-7b197a.jpg',
+        //     price: 185.0,
+        //     quantity: 44,
+        //     requestedQantity: 1,
+        //     shipmmentDate: 'Yarın kargoda',
+        //     title: 'Tasty Wooden Car',
+        //   } as any,
+        // ];
       },
       error: (errorText) => {
         this.snackBar.open(errorText, 'Kapat', {
@@ -34,6 +46,72 @@ export class MyShoppingBasketComponent {
         });
       },
     });
+  }
+
+  addOneToProduct(shoppingBasketProduct: ShoppingBasketProduct): void {
+    console.log(shoppingBasketProduct);
+    this.changeBasketRuqestedQuantity(
+      shoppingBasketProduct,
+      shoppingBasketProduct.requestedQantity + 1
+    );
+  }
+
+  deleteOneToProduct(shoppingBasketProduct: ShoppingBasketProduct): void {
+    if (shoppingBasketProduct.requestedQantity === 1) {
+      this.snackBar.open(
+        '0 adetli bir ürün sepette bulunamaz, en az 1 adet olabilmeli.',
+        'Kapat',
+        {
+          duration: 4000,
+        }
+      );
+    } else {
+      this.changeBasketRuqestedQuantity(
+        shoppingBasketProduct,
+        shoppingBasketProduct.requestedQantity - 1
+      );
+    }
+  }
+
+  changeBasketRuqestedQuantity(
+    shoppingBasketProduct: ShoppingBasketProduct,
+    requestedQuantity: number
+  ): void {
+    this.shoppingBasketService
+      .changeBasketRuqestedQuantity(shoppingBasketProduct.id, requestedQuantity)
+      .subscribe(
+        (res) => {
+          shoppingBasketProduct.requestedQantity = res.quantity;
+        },
+        (err) =>
+          this.snackBar.open(err, 'Kapat', {
+            duration: 2000,
+          })
+      );
+  }
+
+  clearProductFromList(shoppingBasketProduct: ShoppingBasketProduct): void {
+    console.log(shoppingBasketProduct);
+
+    this.shoppingBasketService
+      .clearProductFromBasket(shoppingBasketProduct.id)
+      .subscribe(
+        (res) => {
+          this.snackBar.open(
+            'Ürün başarıyla sepetinizden çıkartılmıştır.',
+            'Kapat',
+            {
+              duration: 2000,
+            }
+          );
+
+          this.getMyShoppingBasketProductList();
+        },
+        (err) =>
+          this.snackBar.open(err, 'Kapat', {
+            duration: 2000,
+          })
+      );
   }
 
   onClickContinueToShopping(): void {

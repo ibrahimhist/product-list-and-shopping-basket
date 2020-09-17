@@ -5,7 +5,10 @@
   </div>
 
   <div *ngIf="myAddedProducts && myAddedProducts.length > 0" class="app-my-shopping-basket__main">
-    <app-shopping-basket></app-shopping-basket>
+    <app-shopping-basket (clickedContinueToShopping)="onClickContinueToShopping()"
+      [shoppingBasketProductList]="myAddedProducts" (clickedAddOne)="addOneToProduct($event)"
+      (clickedDeleteOne)="deleteOneToProduct($event)" (clickedClear)="clearProductFromList($event)">
+    </app-shopping-basket>
 
   </div>
 

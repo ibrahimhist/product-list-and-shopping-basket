@@ -40,7 +40,7 @@ export class ProductsMainComponent implements OnInit {
     console.log(this.productExample);
 
     this.productService.addToBasket(product).subscribe({
-      next: (response: { count: number }) => {
+      next: (response: any) => {
         this.snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat', {
           duration: 2000,
         });
