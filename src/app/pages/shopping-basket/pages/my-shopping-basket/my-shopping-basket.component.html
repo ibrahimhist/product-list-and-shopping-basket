@@ -1,0 +1,17 @@
+<div class="app-my-shopping-basket">
+  <div *ngIf="myAddedProducts && myAddedProducts.length === 0">
+    <h3>Sepetinizde ürün bulunmamaktadır.</h3>
+    <button mat-raised-button color="primary" (click)="onClickContinueToShopping()">Alışverişe Devam Et</button>
+  </div>
+
+  <div *ngIf="myAddedProducts && myAddedProducts.length > 0" class="app-my-shopping-basket__main">
+    <app-shopping-basket></app-shopping-basket>
+
+  </div>
+
+  <div *ngIf="mySummary" class="app-my-shopping-basket__summary">
+    <app-shopping-basket-summary></app-shopping-basket-summary>
+    <button mat-raised-button color="primary">Alışverişi Tamamla</button>
+  </div>
+
+</div>

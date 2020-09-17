@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MyShoppingBasketComponent } from './components/my-shopping-basket/my-shopping-basket.component';
+import { MyShoppingBasketComponent } from './pages/my-shopping-basket/my-shopping-basket.component';
 
 const routes: Routes = [
   {
