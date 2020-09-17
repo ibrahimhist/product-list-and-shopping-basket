@@ -20,4 +20,34 @@ export class FakeApiService {
       // delay(faker.random.number(3000))
       ();
   }
+
+  addToBasket(
+    product: Product,
+    quatity: number = 1
+  ): Observable<{
+    count: number;
+  }> {
+    let finalQuatity = 0;
+
+    const addedProducts: {
+      id: string;
+      quatity: number;
+    }[] = this.fakeDatabaseService.database.addedToBasketProducts;
+
+    const foundProduct = addedProducts.find((x) => x.id === product.id);
+
+    if (foundProduct) {
+      foundProduct.quatity += quatity;
+    } else {
+      addedProducts.push({
+        id: product.id,
+        quatity,
+      });
+    }
+
+    finalQuatity = addedProducts
+      .map((x) => x.quatity)
+      .reduce((accumulator, currentValue) => accumulator + currentValue);
+    return of({ count: finalQuatity });
+  }
 }

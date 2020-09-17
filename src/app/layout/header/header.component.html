@@ -2,7 +2,8 @@
   <span class="company-name" (click)="onClickCompanyName()">P&S</span>
   <span class="example-spacer"></span>
 
-  <button mat-raised-button matBadge="7" [matBadgeHidden]="hidden" (click)="onClickMyShoppingBasket()">
+  <button mat-raised-button [matBadge]="productCount" [matBadgeHidden]="productCountHidden"
+    (click)="onClickMyShoppingBasket()">
     <mat-icon>shopping_basket</mat-icon> Sepetim
   </button>
 </mat-toolbar>

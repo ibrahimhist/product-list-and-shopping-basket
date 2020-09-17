@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { HeaderService } from '@app/shared/services/header.service';
 
 @Component({
   selector: 'app-header',
@@ -7,9 +8,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  hidden = false;
+  productCount: number;
+  productCountHidden: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private headerService: HeaderService) {
+    this.headerService
+      .getShoppingBasketProductCount()
+      .subscribe((productCount) => {
+        this.productCount = productCount;
+        this.productCountHidden = productCount === 0;
+      });
+  }
 
   ngOnInit(): void {}
 

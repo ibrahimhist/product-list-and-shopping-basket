@@ -8,10 +8,16 @@ import { Product } from 'src/app/pages/products/shared/models/product.model';
 export class FakeDatabaseService {
   database: {
     products: Product[];
+    addedToBasketProducts: {
+      id: string;
+      quatity: number;
+    }[];
   };
+
   constructor() {
     this.database = {
       products: [],
+      addedToBasketProducts: [],
     };
   }
 
