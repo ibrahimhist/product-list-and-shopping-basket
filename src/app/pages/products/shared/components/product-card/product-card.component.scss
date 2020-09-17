@@ -1,0 +1,22 @@
+.app-product-card {
+  &__img {
+    margin-bottom: 0 !important;
+  }
+
+  &__content,
+  &__actions {
+    text-align: center;
+  }
+
+  &__price {
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--color-accent);
+
+    &__symbol {
+      font-size: 14px;
+    }
+  }
+
+
+}

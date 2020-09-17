@@ -1,0 +1,7 @@
+<div *ngIf="productList" class="app-product-list" @list>
+
+  <app-product-card *ngFor="let product of productList" [product]="product"
+    [callbackFunForAddingBasket]="callbackFunForAddingBasket" @items>
+  </app-product-card>
+
+</div>

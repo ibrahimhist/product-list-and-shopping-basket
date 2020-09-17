@@ -1,0 +1,15 @@
+<mat-card *ngIf="product" class="app-product-card">
+  <img class="app-product-card__img" mat-card-image [src]="product.imageUrl" alt="Photo of a Shiba Inu">
+  <mat-card-content class="app-product-card__content">
+    <h4 class="app-product-card__title">
+      {{product.title}}
+    </h4>
+    <p class="app-product-card__price">
+      {{product.price }} <span class="app-product-card__price__symbol">TL</span>
+    </p>
+  </mat-card-content>
+  <mat-card-actions class="app-product-card__actions">
+    <button [disabled]="product.quantity === 0" mat-raised-button color="primary"
+      (click)="onClickAddToBasket($event)">Sepete Ekle</button>
+  </mat-card-actions>
+</mat-card>
