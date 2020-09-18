@@ -4,6 +4,7 @@ import { HeaderService } from '@app/shared/services/header.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/internal/operators';
 import { ShoppingBasketProduct } from '../models/shopping-basket-product.model';
+import { ShoppingBasketSummary } from '../models/shopping-basket-summary.model';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +17,10 @@ export class ShoppingBasketService {
 
   getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
     return this.fakeApiService.getMyShoppingBasketProductList();
+  }
+
+  getShoppingBasketSummary(): Observable<ShoppingBasketSummary> {
+    return this.fakeApiService.getShoppingBasketSummary();
   }
 
   changeBasketRuqestedQuantity(

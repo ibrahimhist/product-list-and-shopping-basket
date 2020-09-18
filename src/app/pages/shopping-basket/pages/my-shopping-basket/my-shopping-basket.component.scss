@@ -11,8 +11,9 @@
     // flex-direction: column;
     // justify-content: center;
 
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
+    .button {
+      margin-top: 16px;
+      width: 100%;
+    }
   }
 }

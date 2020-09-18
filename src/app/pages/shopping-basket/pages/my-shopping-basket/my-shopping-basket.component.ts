@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Product } from '@app/pages/products/shared/models/product.model';
 import { ShoppingBasketProduct } from '../../shared/models/shopping-basket-product.model';
+import { ShoppingBasketSummary } from '../../shared/models/shopping-basket-summary.model';
 import { ShoppingBasketService } from '../../shared/services/shopping-basket.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { ShoppingBasketService } from '../../shared/services/shopping-basket.ser
 })
 export class MyShoppingBasketComponent {
   myAddedProducts: Product[];
-  mySummary: any;
+  myShoppingBasketSummary: ShoppingBasketSummary;
 
   constructor(
     private router: Router,
@@ -20,6 +21,7 @@ export class MyShoppingBasketComponent {
     private shoppingBasketService: ShoppingBasketService
   ) {
     this.getMyShoppingBasketProductList();
+    this.getShoppingBasketSummary();
   }
 
   getMyShoppingBasketProductList(): void {
@@ -27,18 +29,6 @@ export class MyShoppingBasketComponent {
       next: (response: ShoppingBasketProduct[]) => {
         this.myAddedProducts = response || [];
         console.log(this.myAddedProducts);
-        // this.myAddedProducts = [
-        //   {
-        //     id: 'd99cd658-a466-4af1-95b1-f1ece9bc14d7',
-        //     imageUrl:
-        //       'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05046981/05046981-7b197a.jpg',
-        //     price: 185.0,
-        //     quantity: 44,
-        //     requestedQantity: 1,
-        //     shipmmentDate: 'Yarın kargoda',
-        //     title: 'Tasty Wooden Car',
-        //   } as any,
-        // ];
       },
       error: (errorText) => {
         this.snackBar.open(errorText, 'Kapat', {
@@ -82,6 +72,7 @@ export class MyShoppingBasketComponent {
       .subscribe(
         (res) => {
           shoppingBasketProduct.requestedQantity = res.quantity;
+          this.getShoppingBasketSummary();
         },
         (err) =>
           this.snackBar.open(err, 'Kapat', {
@@ -106,12 +97,27 @@ export class MyShoppingBasketComponent {
           );
 
           this.getMyShoppingBasketProductList();
+          this.getShoppingBasketSummary();
         },
         (err) =>
           this.snackBar.open(err, 'Kapat', {
             duration: 2000,
           })
       );
+  }
+
+  getShoppingBasketSummary(): void {
+    this.shoppingBasketService.getShoppingBasketSummary().subscribe(
+      (res) => {
+        this.myShoppingBasketSummary = res;
+
+        console.log(this.myShoppingBasketSummary);
+      },
+      (err) =>
+        this.snackBar.open(err, 'Kapat', {
+          duration: 2000,
+        })
+    );
   }
 
   onClickContinueToShopping(): void {

@@ -8,6 +8,7 @@ import { delay } from 'rxjs/internal/operators';
 
 import * as faker from 'faker/locale/tr';
 import { ShoppingBasketProduct } from '@app/pages/shopping-basket/shared/models/shopping-basket-product.model';
+import { ShoppingBasketSummary } from '@app/pages/shopping-basket/shared/models/shopping-basket-summary.model';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class FakeApiService {
   getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
     const addedProducts: {
       id: string;
-      quatity: number;
+      requestedQuatity: number;
     }[] = this.fakeDatabaseService.database.addedToBasketProducts;
 
     const shoppingBasketProductList: ShoppingBasketProduct[] = [];
@@ -37,7 +38,7 @@ export class FakeApiService {
       if (foundProduct) {
         shoppingBasketProductList.push({
           ...foundProduct,
-          requestedQantity: addedProduct.quatity,
+          requestedQantity: addedProduct.requestedQuatity,
           shipmmentDate: 'Yarın kargoda',
         });
       }
@@ -54,21 +55,21 @@ export class FakeApiService {
   }> {
     const addedProducts: {
       id: string;
-      quatity: number;
+      requestedQuatity: number;
     }[] = this.fakeDatabaseService.database.addedToBasketProducts;
 
     const foundProduct = addedProducts.find((x) => x.id === product.id);
 
     if (foundProduct) {
-      if (foundProduct.quatity + quatity > 25) {
+      if (foundProduct.requestedQuatity + quatity > 25) {
         return throwError('Maksimum limite ulaştınız.');
       } else {
-        foundProduct.quatity += quatity;
+        foundProduct.requestedQuatity += quatity;
       }
     } else {
       addedProducts.push({
         id: product.id,
-        quatity,
+        requestedQuatity: quatity,
       });
     }
 
@@ -81,17 +82,17 @@ export class FakeApiService {
   ): Observable<{
     quantity: number;
   }> {
-    const foundProduct = this.fakeDatabaseService.database.products.find(
+    const foundAddedProduct = this.fakeDatabaseService.database.addedToBasketProducts.find(
       (x) => x.id === id
     );
 
-    if (!foundProduct) {
+    if (!foundAddedProduct) {
       return throwError('Ürün bulunmamaktadır.');
     } else {
       if (quantity > 25) {
         return throwError('Maksimum limite ulaştınız.');
       } else {
-        foundProduct.quantity = quantity;
+        foundAddedProduct.requestedQuatity = quantity;
       }
     }
 
@@ -118,5 +119,29 @@ export class FakeApiService {
       basketProductCount: this.fakeDatabaseService.database
         .addedToBasketProducts.length,
     });
+  }
+
+  getShoppingBasketSummary(): Observable<ShoppingBasketSummary> {
+    let totalPayment = 0;
+    const addedToBasketProducts = this.fakeDatabaseService.database
+      .addedToBasketProducts;
+    addedToBasketProducts.forEach((item) => {
+      const foundProduct = this.fakeDatabaseService.database.products.find(
+        (x) => x.id === item.id
+      );
+      if (foundProduct) {
+        totalPayment +=
+          parseInt(foundProduct.price as any, 10) * item.requestedQuatity;
+      }
+    });
+
+    return of(
+      addedToBasketProducts.length > 0
+        ? {
+            productCount: addedToBasketProducts.length,
+            totalPayment,
+          }
+        : null
+    );
   }
 }

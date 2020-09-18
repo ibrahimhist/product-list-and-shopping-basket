@@ -1,0 +1,25 @@
+.app-shopping-basket-summary {
+  &__header {
+    text-align: right;
+  }
+
+  &__content {
+    text-align: right;
+
+    &__header {
+      margin-bottom: 10px;
+      color: var(--color-secondary-text);
+    }
+  }
+}
+
+
+:host ::ng-deep .mat-card-header-text {
+  width: 100%;
+  text-align: right;
+  margin: 0;
+}
+
+.total-price {
+  font-size: 25px;
+}

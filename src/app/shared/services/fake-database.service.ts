@@ -10,7 +10,7 @@ export class FakeDatabaseService {
     products: Product[];
     addedToBasketProducts: {
       id: string;
-      quatity: number;
+      requestedQuatity: number;
     }[];
   };
 

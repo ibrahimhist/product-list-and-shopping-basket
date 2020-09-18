@@ -1,10 +1,16 @@
-<mat-card>
+<mat-card class="app-shopping-basket-summary">
   <mat-card-header>
-    <mat-card-title>Sipariş Özeti</mat-card-title>
+    <mat-card-title class="app-shopping-basket-summary__header">Sipariş Özeti</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content class="app-shopping-basket-summary__content">
+    <h5 class="app-shopping-basket-summary__content__header">Toplam ürün sayısı</h5>
     <p>
-      card
+      {{shoppingBasketSummary?.productCount}} ürün
+    </p>
+
+    <h5 class="app-shopping-basket-summary__content__header">Ödenecek Tutar</h5>
+    <p class="total-price">
+      {{shoppingBasketSummary?.totalPayment  | currency:'‎₺‎'}}
     </p>
   </mat-card-content>
 </mat-card>
