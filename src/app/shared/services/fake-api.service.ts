@@ -47,9 +47,24 @@ export class FakeApiService {
     return of(shoppingBasketProductList);
   }
 
+  private isRequestedQuantityGreaterThanAvailableQuantity(
+    productId: string,
+    requestedQantity: number
+  ): boolean {
+    const foundProduct = this.fakeDatabaseService.database.products.find(
+      (x) => x.id === productId
+    );
+    let isGreater = false;
+
+    if (foundProduct && requestedQantity > foundProduct.quantity) {
+      isGreater = true;
+    }
+
+    return isGreater;
+  }
+
   addToBasket(
-    product: Product,
-    quatity: number = 1
+    product: Product
   ): Observable<{
     basketProductCount: number;
   }> {
@@ -58,18 +73,26 @@ export class FakeApiService {
       requestedQuatity: number;
     }[] = this.fakeDatabaseService.database.addedToBasketProducts;
 
-    const foundProduct = addedProducts.find((x) => x.id === product.id);
+    const foundAddedProduct = addedProducts.find((x) => x.id === product.id);
+    const foundProduct = this.fakeDatabaseService.database.products.find(
+      (x) => x.id === product.id
+    );
 
-    if (foundProduct) {
-      if (foundProduct.requestedQuatity + quatity > 25) {
+    if (foundAddedProduct) {
+      if (
+        this.isRequestedQuantityGreaterThanAvailableQuantity(
+          product.id,
+          foundAddedProduct.requestedQuatity + 1
+        )
+      ) {
         return throwError('Maksimum limite ulaştınız.');
       } else {
-        foundProduct.requestedQuatity += quatity;
+        foundAddedProduct.requestedQuatity += 1;
       }
     } else {
       addedProducts.push({
         id: product.id,
-        requestedQuatity: quatity,
+        requestedQuatity: 1,
       });
     }
 
@@ -89,7 +112,7 @@ export class FakeApiService {
     if (!foundAddedProduct) {
       return throwError('Ürün bulunmamaktadır.');
     } else {
-      if (quantity > 25) {
+      if (this.isRequestedQuantityGreaterThanAvailableQuantity(id, quantity)) {
         return throwError('Maksimum limite ulaştınız.');
       } else {
         foundAddedProduct.requestedQuatity = quantity;

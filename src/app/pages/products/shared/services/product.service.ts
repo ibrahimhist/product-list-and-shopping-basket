@@ -20,8 +20,7 @@ export class ProductService {
   }
 
   addToBasket(
-    product: Product,
-    quatity: number = 1
+    product: Product
   ): Observable<{
     basketProductCount: number;
   }> {
