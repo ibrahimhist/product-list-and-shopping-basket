@@ -1,0 +1,15 @@
+version: "3.4"
+
+services:
+  productlistandshoppingbasket:
+    image: productlistandshoppingbasket
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "40200:80"
+    networks:
+      - productlistandshoppingbasket_network
+
+networks:
+  productlistandshoppingbasket_network: {}
