@@ -5,4 +5,8 @@
 
 .company-name {
   cursor: pointer;
+
+  &__connector {
+    font-size: 14px;
+  }
 }

@@ -46,7 +46,7 @@ export class FakeDatabaseService {
           'https://migros-dali-storage-prod.global.ssl.fastly.net/sanalmarket/product/05046981/05046981-7b197a.jpg',
         // imageUrl: faker.image.imageUrl(null, null, 'food', true, true),
         price: faker.commerce.price(1, 300, 2) as any,
-        quantity: faker.random.number(5),
+        quantity: faker.random.number(10),
       });
     }
 
