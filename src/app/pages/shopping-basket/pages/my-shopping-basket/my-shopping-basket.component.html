@@ -7,14 +7,17 @@
   <div *ngIf="myAddedProducts && myAddedProducts.length > 0" class="app-my-shopping-basket__main">
     <app-shopping-basket (clickedContinueToShopping)="onClickContinueToShopping()"
       [shoppingBasketProductList]="myAddedProducts" (clickedAddOne)="addOneToProduct($event)"
-      (clickedDeleteOne)="deleteOneToProduct($event)" (clickedClear)="clearProductFromList($event)">
+      [isReadOnly]="isShoppingCompleted" (clickedDeleteOne)="deleteOneToProduct($event)"
+      (clickedClear)="clearProductFromList($event)">
     </app-shopping-basket>
 
   </div>
 
   <div *ngIf="myShoppingBasketSummary" class="app-my-shopping-basket__summary">
     <app-shopping-basket-summary [shoppingBasketSummary]="myShoppingBasketSummary"></app-shopping-basket-summary>
-    <button mat-raised-button class="button" color="primary">Alışverişi Tamamla</button>
+    <button *ngIf="!isShoppingCompleted" mat-raised-button class="button" color="primary"
+      (click)="onClickCompleteShopping()">Alışverişi
+      Tamamla</button>
   </div>
 
 </div>

@@ -8,6 +8,7 @@ import { ShoppingBasketProduct } from '../../models/shopping-basket-product.mode
 })
 export class ShoppingBasketComponent {
   @Input() shoppingBasketProductList: ShoppingBasketProduct[];
+  @Input() isReadOnly?: boolean;
 
   @Output() clickedAddOne: EventEmitter<
     ShoppingBasketProduct

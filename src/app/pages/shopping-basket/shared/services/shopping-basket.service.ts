@@ -38,4 +38,15 @@ export class ShoppingBasketService {
       })
     );
   }
+
+  completeShopping(): Observable<{ isSuccess: boolean }> {
+    return this.fakeApiService.completeShopping().pipe(
+      map((x) => {
+        if (x.isSuccess) {
+          this.headerService.setShoppingBasketProductCount(0);
+        }
+        return x;
+      })
+    );
+  }
 }

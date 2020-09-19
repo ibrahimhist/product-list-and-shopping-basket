@@ -2,22 +2,32 @@ import { Injectable } from '@angular/core';
 import * as faker from 'faker/locale/tr';
 import { Product } from 'src/app/pages/products/shared/models/product.model';
 
+export interface AddedToBasketProduct {
+  productId: string;
+  requestedQuatity: number;
+}
+
+export interface CompletedShopping {
+  id: string;
+  products: AddedToBasketProduct[];
+  date: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class FakeDatabaseService {
   database: {
     products: Product[];
-    addedToBasketProducts: {
-      id: string;
-      requestedQuatity: number;
-    }[];
+    addedToBasketProducts: AddedToBasketProduct[];
+    completedShoppings: CompletedShopping[];
   };
 
   constructor() {
     this.database = {
       products: [],
       addedToBasketProducts: [],
+      completedShoppings: [],
     };
   }
 

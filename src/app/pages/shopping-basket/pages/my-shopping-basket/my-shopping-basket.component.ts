@@ -15,6 +15,8 @@ export class MyShoppingBasketComponent {
   myAddedProducts: Product[];
   myShoppingBasketSummary: ShoppingBasketSummary;
 
+  isShoppingCompleted: boolean;
+
   constructor(
     private router: Router,
     private snackBar: MatSnackBar,
@@ -122,5 +124,24 @@ export class MyShoppingBasketComponent {
 
   onClickContinueToShopping(): void {
     this.router.navigate(['/products']);
+  }
+
+  onClickCompleteShopping(): void {
+    this.shoppingBasketService.completeShopping().subscribe(
+      (res) => {
+        this.isShoppingCompleted = true;
+        this.snackBar.open(
+          'Alışverişiniz tamamlanmıştır. İyi alışverişler dileriz.',
+          'Kapat',
+          {
+            duration: 5000,
+          }
+        );
+      },
+      (err) =>
+        this.snackBar.open(err, 'Kapat', {
+          duration: 2000,
+        })
+    );
   }
 }

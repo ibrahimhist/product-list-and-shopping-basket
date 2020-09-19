@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { Product } from 'src/app/pages/products/shared/models/product.model';
-import { FakeDatabaseService } from './fake-database.service';
+import {
+  AddedToBasketProduct,
+  FakeDatabaseService,
+} from './fake-database.service';
 
 import { Observable, of, throwError } from 'rxjs';
 import { delay } from 'rxjs/internal/operators';
@@ -24,15 +27,13 @@ export class FakeApiService {
   }
 
   getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
-    const addedProducts: {
-      id: string;
-      requestedQuatity: number;
-    }[] = this.fakeDatabaseService.database.addedToBasketProducts;
+    const addedProducts: AddedToBasketProduct[] = this.fakeDatabaseService
+      .database.addedToBasketProducts;
 
     const shoppingBasketProductList: ShoppingBasketProduct[] = [];
     addedProducts.forEach((addedProduct) => {
       const foundProduct = this.fakeDatabaseService.database.products.find(
-        (x) => x.id === addedProduct.id
+        (x) => x.id === addedProduct.productId
       );
 
       if (foundProduct) {
@@ -68,14 +69,11 @@ export class FakeApiService {
   ): Observable<{
     basketProductCount: number;
   }> {
-    const addedProducts: {
-      id: string;
-      requestedQuatity: number;
-    }[] = this.fakeDatabaseService.database.addedToBasketProducts;
+    const addedProducts: AddedToBasketProduct[] = this.fakeDatabaseService
+      .database.addedToBasketProducts;
 
-    const foundAddedProduct = addedProducts.find((x) => x.id === product.id);
-    const foundProduct = this.fakeDatabaseService.database.products.find(
-      (x) => x.id === product.id
+    const foundAddedProduct = addedProducts.find(
+      (x) => x.productId === product.id
     );
 
     if (foundAddedProduct) {
@@ -91,7 +89,7 @@ export class FakeApiService {
       }
     } else {
       addedProducts.push({
-        id: product.id,
+        productId: product.id,
         requestedQuatity: 1,
       });
     }
@@ -106,7 +104,7 @@ export class FakeApiService {
     quantity: number;
   }> {
     const foundAddedProduct = this.fakeDatabaseService.database.addedToBasketProducts.find(
-      (x) => x.id === id
+      (x) => x.productId === id
     );
 
     if (!foundAddedProduct) {
@@ -126,7 +124,7 @@ export class FakeApiService {
 
   clearProductFromBasket(id: string) {
     const foundProductIndex = this.fakeDatabaseService.database.addedToBasketProducts.findIndex(
-      (x) => x.id === id
+      (x) => x.productId === id
     );
 
     if (foundProductIndex === -1) {
@@ -150,7 +148,7 @@ export class FakeApiService {
       .addedToBasketProducts;
     addedToBasketProducts.forEach((item) => {
       const foundProduct = this.fakeDatabaseService.database.products.find(
-        (x) => x.id === item.id
+        (x) => x.id === item.productId
       );
       if (foundProduct) {
         totalPayment +=
@@ -166,5 +164,33 @@ export class FakeApiService {
           }
         : null
     );
+  }
+
+  completeShopping(): Observable<{ isSuccess: boolean }> {
+    const addedProducts: AddedToBasketProduct[] = this.fakeDatabaseService
+      .database.addedToBasketProducts;
+
+    if (addedProducts.length === 0) {
+      return throwError('Sepetinizde ürün bulunmamaktadır.');
+    }
+    addedProducts.forEach((item) => {
+      const foundProduct = this.fakeDatabaseService.database.products.find(
+        (x) => x.id === item.productId
+      );
+
+      if (foundProduct) {
+        foundProduct.quantity -= item.requestedQuatity;
+      }
+    });
+
+    this.fakeDatabaseService.database.completedShoppings.push({
+      id: faker.random.uuid(),
+      products: [...addedProducts],
+      date: new Date().toDateString(),
+    });
+
+    this.fakeDatabaseService.database.addedToBasketProducts = [];
+
+    return of({ isSuccess: true });
   }
 }
