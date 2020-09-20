@@ -23,7 +23,7 @@ Uygulamada 2 modül bulunmaktadır.
    - Shared/components Ürün Listeleme sayfası ve ileride olacak sayfalar için genel bileşenler.
 
 2. Sepet modülü:
-   - Sepete Sayfası
+   - Sepet Sayfası
    - Shared/components Sepet sayfası ve ileride olacak sayfalar için genel bileşenler.
 
 Genel kurgu:
