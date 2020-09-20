@@ -2,11 +2,8 @@
   <h1 class="app-products-main__header">Süper Fiyat, Süper Teklif</h1>
 
   <div class="app-products-main__product-list-container">
-    <app-product-list
-      *ngIf="productListExample"
-      [productList]="productListExample"
-      [callbackFunForAddingBasket]="callbackFunForAddingBasket"
-    >
+    <app-product-list *ngIf="(products | async).products" [productList]="(products | async).products"
+      [callbackFunForAddingBasket]="callbackFunForAddingBasket">
     </app-product-list>
   </div>
 </div>
