@@ -26,4 +26,12 @@ Uygulamada 2 modül bulunmaktadır.
    - Sepete Sayfası
    - Shared/components Sepet sayfası ve ileride olacak sayfalar için genel bileşenler.
 
-Genel kurgu: - 2 API varsayımı: 1. Ürün API si: Ürünler ile ilgilenen api, ürünlerin lestelenmesi, ileride yeni ürün eklenmesi, silinmesi vs. 2. Sepet API si: Sepet ile ilgilenen api, ürünlerin sepete atılması, atılan ürünün silinmesi, miktarını değiştirme vs. - Mock Data için Interceptor veya JSON Server kullanmadan daha basit düzeyde FakeApiService oluşturuldu. Görevi sanki back-end miş gibi, kendi db sini (FakeDatabaseService) kullanarak ve işlemlerinde gerekli validasyonlarını sağlamak, aynı zamanda http gibi Observable dönmek. - FakeDatabaseService, sadece app componenttte database default veriler aktarılması haricinde, proje kullanımından izole edilmiştir. Fake back-end in fake database i :)
+Genel kurgu:
+
+- 2 API varsayımı:
+
+1.  Ürün API si: Ürünler ile ilgilenen api, ürünlerin lestelenmesi, ileride yeni ürün eklenmesi, silinmesi vs.
+2.  Sepet API si: Sepet ile ilgilenen api, ürünlerin sepete atılması, atılan ürünün silinmesi, miktarını değiştirme vs.
+
+- Mock Data için Interceptor veya JSON Server kullanmadan daha basit düzeyde FakeApiService oluşturuldu. Görevi sanki back-end miş gibi, kendi db sini (FakeDatabaseService) kullanarak ve işlemlerinde gerekli validasyonlarını sağlamak, aynı zamanda http gibi Observable dönmek.
+- FakeDatabaseService, sadece app componenttte database default veriler aktarılması haricinde, proje kullanımından izole edilmiştir. Fake back-end in fake database i :)
