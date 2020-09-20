@@ -65,7 +65,7 @@ export class FakeApiService {
   }
 
   addToBasket(
-    product: Product
+    productId: string
   ): Observable<{
     basketProductCount: number;
   }> {
@@ -73,13 +73,13 @@ export class FakeApiService {
       .database.addedToBasketProducts;
 
     const foundAddedProduct = addedProducts.find(
-      (x) => x.productId === product.id
+      (x) => x.productId === productId
     );
 
     if (foundAddedProduct) {
       if (
         this.isRequestedQuantityGreaterThanAvailableQuantity(
-          product.id,
+          productId,
           foundAddedProduct.requestedQuatity + 1
         )
       ) {
@@ -89,7 +89,7 @@ export class FakeApiService {
       }
     } else {
       addedProducts.push({
-        productId: product.id,
+        productId,
         requestedQuatity: 1,
       });
     }

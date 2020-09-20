@@ -15,6 +15,19 @@ export class ShoppingBasketService {
     private headerService: HeaderService
   ) {}
 
+  addToBasket(
+    productId: string
+  ): Observable<{
+    basketProductCount: number;
+  }> {
+    return this.fakeApiService.addToBasket(productId).pipe(
+      map((x) => {
+        this.headerService.setShoppingBasketProductCount(x.basketProductCount);
+        return x;
+      })
+    );
+  }
+
   getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
     return this.fakeApiService.getMyShoppingBasketProductList();
   }
