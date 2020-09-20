@@ -1,11 +1,11 @@
-<div *ngIf="shoppingBasketProduct" class="app-shopping-basket-item">
+<div class="app-shopping-basket-item">
   <div class="app-shopping-basket-item__img-box">
-    <img [src]="shoppingBasketProduct.imageUrl" alt="">
+    <img [src]="shoppingBasketProduct?.imageUrl" alt="">
   </div>
   <div class="app-shopping-basket-item__detail">
-    <h4 class="app-shopping-basket-item__title">{{shoppingBasketProduct.title}}</h4>
+    <h4 class="app-shopping-basket-item__title">{{shoppingBasketProduct?.title}}</h4>
     <p class="app-shopping-basket-item__shipmentdate">
-      <mat-icon class="icon">access_time</mat-icon> {{shoppingBasketProduct.shipmmentDate}}
+      <mat-icon class="icon">access_time</mat-icon> {{shoppingBasketProduct?.shipmmentDate}}
     </p>
 
   </div>
@@ -14,7 +14,7 @@
       (click)="onClickDeleteOne()">
       <mat-icon>remove</mat-icon>
     </button>
-    <mat-form-field class="quatity-form-field">
+    <mat-form-field *ngIf="shoppingBasketProduct" class="quatity-form-field">
       <input matInput type="number" [(ngModel)]="shoppingBasketProduct.requestedQantity" disabled autocomplete="off">
     </mat-form-field>
     <button *ngIf="!isReadOnly" mat-icon-button color="primary" aria-label="Example icon button with a menu icon"
@@ -25,7 +25,7 @@
   </div>
   <div class="app-shopping-basket-item__price">
 
-    <span>{{shoppingBasketProduct.price }} <span class="app-shopping-basket-item__price__symbol">TL</span></span>
+    <span>{{shoppingBasketProduct?.price }} <span class="app-shopping-basket-item__price__symbol">TL</span></span>
   </div>
   <div *ngIf="!isReadOnly" class="app-shopping-basket-item__actions">
     <button mat-button (click)="onClickClear()">

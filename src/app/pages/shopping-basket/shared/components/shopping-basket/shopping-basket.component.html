@@ -2,7 +2,7 @@
   <mat-card-header>
     <mat-card-title>Sepetim</mat-card-title>
   </mat-card-header>
-  <mat-card-content *ngIf="shoppingBasketProductList">
+  <mat-card-content>
     <app-shopping-basket-item *ngFor="let shoppingBasketProduct of shoppingBasketProductList" [isReadOnly]="isReadOnly"
       [shoppingBasketProduct]="shoppingBasketProduct" (clickedAddOne)="onClickedAddOne($event)"
       (clickedDeleteOne)="onClickedDeleteOne($event)" (clickedClear)="onClickedClear($event)">

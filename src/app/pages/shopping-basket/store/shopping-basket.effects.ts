@@ -30,9 +30,6 @@ export class ShoppingBasketEffects {
     ofType(ShoppingBasketActions.ADD_PRODUCT),
     switchMap((addProductData: ShoppingBasketActions.AddProduct) => {
       return this.fakeApiService.addToBasket(addProductData.payload).pipe(
-        // tap((resData) => {
-        //   console.log(resData);
-        // }),
         switchMap((resData: { basketProductCount: number }) => {
           return [
             new ShoppingBasketActions.SetBasketProductCount(
@@ -45,6 +42,86 @@ export class ShoppingBasketEffects {
         }),
         catchError((errorRes) => {
           console.log(errorRes);
+          return handleError(errorRes);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  fetchShoppingBasketProducts = this.actions$.pipe(
+    ofType(ShoppingBasketActions.FETCH_SOPPINGBASKETPRODUCTS),
+    switchMap(() => {
+      return this.fakeApiService.getMyShoppingBasketProductList().pipe(
+        map((resData) => {
+          return new ShoppingBasketActions.SetShoppingBasketProducts(resData);
+        }),
+        catchError((errorRes) => {
+          return handleError(errorRes);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  fetchShoppingBasketSummary = this.actions$.pipe(
+    ofType(ShoppingBasketActions.FETCH_SOPPINGBASKETSUMMARY),
+    switchMap(() => {
+      return this.fakeApiService.getShoppingBasketSummary().pipe(
+        map((resData) => {
+          return new ShoppingBasketActions.SetShoppingBasketSummary(resData);
+        }),
+        catchError((errorRes) => {
+          return handleError(errorRes);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  updateProductRequestedQuantity = this.actions$.pipe(
+    ofType(ShoppingBasketActions.UPDATE_PRODUCTREQUESTEDQUANTITY),
+    switchMap((data: ShoppingBasketActions.UpdateProductRequestedQuantity) => {
+      return this.fakeApiService
+        .changeBasketRuqestedQuantity(
+          data.payload.productId,
+          data.payload.requestedQuantity
+        )
+        .pipe(
+          switchMap(() => {
+            return [
+              new ShoppingBasketActions.UpdateProduct({
+                productId: data.payload.productId,
+                requestedQuantity: data.payload.requestedQuantity,
+              }),
+              new ShoppingBasketActions.FethShoppingBasketSummary(),
+            ];
+          }),
+          catchError((errorRes) => {
+            return handleError(errorRes);
+          })
+        );
+    })
+  );
+
+  @Effect()
+  deleteProduct = this.actions$.pipe(
+    ofType(ShoppingBasketActions.DELETE_PRODUCT),
+    switchMap((data: ShoppingBasketActions.DeleteProduct) => {
+      return this.fakeApiService.clearProductFromBasket(data.payload).pipe(
+        switchMap((resData: { basketProductCount: number }) => {
+          return [
+            new ShoppingBasketActions.FethShoppingBasketProducts(),
+            new ShoppingBasketActions.FethShoppingBasketSummary(),
+            new ShoppingBasketActions.SetBasketProductCount(
+              resData.basketProductCount
+            ),
+            new ShoppingBasketActions.OnSuccess(
+              'Ürün başarıyla sepetinizden çıkartılmıştır.'
+            ),
+          ];
+        }),
+        catchError((errorRes) => {
           return handleError(errorRes);
         })
       );
