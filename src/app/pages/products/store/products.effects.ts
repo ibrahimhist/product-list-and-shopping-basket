@@ -7,6 +7,11 @@ import * as ProductsActions from './products.action';
 
 import { FakeApiService } from '@app/shared/services/fake-api.service';
 
+/* Not:
+Fake Api aslında http ile istek atıyormuşum gibi düşünebiliriz.
+Alt yapıyı http ile atılıp dummy data şeklinde dönecek şekilde ayarlamadığım için, bu yolu kullandım.
+*/
+
 @Injectable()
 export class ProductsEffects {
   constructor(

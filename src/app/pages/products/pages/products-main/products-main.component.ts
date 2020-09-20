@@ -8,6 +8,8 @@ import { Product } from '../../shared/models/product.model';
 import { ShoppingBasketService } from '@app/pages/shopping-basket/shared/services/shopping-basket.service';
 
 import * as ProductsActions from 'src/app/pages/products/store/products.action';
+import * as ShoppingBasketActions from 'src/app/pages/shopping-basket/store/shopping-basket.actions';
+
 import * as fromProducts from 'src/app/pages/products/store/products.reducer';
 import * as fromApp from 'src/app/store/app.reducer';
 
@@ -53,17 +55,19 @@ export class ProductsMainComponent implements OnInit {
     console.log(product);
     console.log(this.productExample);
 
-    this.shoppingBasketService.addToBasket(product.id).subscribe({
-      next: (response: any) => {
-        this.snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat', {
-          duration: 2000,
-        });
-      },
-      error: (errorText) => {
-        this.snackBar.open(errorText, 'Kapat', {
-          duration: 2000,
-        });
-      },
-    });
+    // this.shoppingBasketService.addToBasket(product.id).subscribe({
+    //   next: (response: any) => {
+    //     this.snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat', {
+    //       duration: 2000,
+    //     });
+    //   },
+    //   error: (errorText) => {
+    //     this.snackBar.open(errorText, 'Kapat', {
+    //       duration: 2000,
+    //     });
+    //   },
+    // });
+
+    this.store.dispatch(new ShoppingBasketActions.AddProduct(product.id));
   }
 }

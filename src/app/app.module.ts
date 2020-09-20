@@ -18,6 +18,7 @@ import { SharedModule } from './shared/modules/shared/shared.module';
 
 import * as fromApp from './store/app.reducer';
 import { ProductsEffects } from './pages/products/store/products.effects';
+import { ShoppingBasketEffects } from './pages/shopping-basket/store/shopping-basket.effects';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { ProductsEffects } from './pages/products/store/products.effects';
     BrowserAnimationsModule,
     SharedModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([ProductsEffects]),
+    EffectsModule.forRoot([ProductsEffects, ShoppingBasketEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
