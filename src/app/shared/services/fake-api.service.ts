@@ -20,10 +20,9 @@ export class FakeApiService {
   constructor(private fakeDatabaseService: FakeDatabaseService) {}
 
   getProductList(): Observable<Product[]> {
-    return of([...this.fakeDatabaseService.database.products])
-      .pipe
-      // delay(faker.random.number(3000))
-      ();
+    return of(
+      JSON.parse(JSON.stringify(this.fakeDatabaseService.database.products))
+    );
   }
 
   getMyShoppingBasketProductList(): Observable<ShoppingBasketProduct[]> {
@@ -45,7 +44,7 @@ export class FakeApiService {
       }
     });
 
-    return of(shoppingBasketProductList);
+    return of([...shoppingBasketProductList]);
   }
 
   private isRequestedQuantityGreaterThanAvailableQuantity(

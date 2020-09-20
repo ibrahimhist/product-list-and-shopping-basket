@@ -9,6 +9,8 @@ export interface State {
   shoppingBasketProducts: ShoppingBasketProduct[];
   shoppingBasketSummary: ShoppingBasketSummary;
 
+  shoppingCompleted: boolean;
+
   successMsg: string;
   errorMsg: string;
 }
@@ -18,6 +20,8 @@ const initialState: State = {
 
   shoppingBasketProducts: [],
   shoppingBasketSummary: null,
+
+  shoppingCompleted: false,
 
   successMsg: null,
   errorMsg: null,
@@ -59,6 +63,11 @@ export function shoppingBasketReducer(
       return {
         ...state,
         shoppingBasketProducts: updatedShoppingBasketProducts,
+      };
+    case ShoppingBasketActions.SET_SHOPPINGCOMPLETED:
+      return {
+        ...state,
+        shoppingCompleted: action.payload,
       };
     default:
       return state;

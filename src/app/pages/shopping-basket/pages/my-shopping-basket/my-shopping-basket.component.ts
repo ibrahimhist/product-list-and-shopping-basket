@@ -43,6 +43,7 @@ export class MyShoppingBasketComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.myAddedProducts = data.shoppingBasketProducts;
         this.myShoppingBasketSummary = data.shoppingBasketSummary;
+        this.isShoppingCompleted = data.shoppingCompleted;
       });
 
     this.getMyShoppingBasketProductList();
@@ -160,22 +161,24 @@ export class MyShoppingBasketComponent implements OnInit, OnDestroy {
   }
 
   onClickCompleteShopping(): void {
-    this.shoppingBasketService.completeShopping().subscribe(
-      (res) => {
-        this.isShoppingCompleted = true;
-        this.snackBar.open(
-          'Alışverişiniz tamamlanmıştır. İyi alışverişler dileriz.',
-          'Kapat',
-          {
-            duration: 5000,
-          }
-        );
-      },
-      (err) =>
-        this.snackBar.open(err, 'Kapat', {
-          duration: 2000,
-        })
-    );
+    // this.shoppingBasketService.completeShopping().subscribe(
+    //   (res) => {
+    //     this.isShoppingCompleted = true;
+    //     this.snackBar.open(
+    //       'Alışverişiniz tamamlanmıştır. İyi alışverişler dileriz.',
+    //       'Kapat',
+    //       {
+    //         duration: 5000,
+    //       }
+    //     );
+    //   },
+    //   (err) =>
+    //     this.snackBar.open(err, 'Kapat', {
+    //       duration: 2000,
+    //     })
+    // );
+
+    this.store.dispatch(new ShoppingBasketActions.CompleteShoppingBasket());
   }
 
   ngOnDestroy(): void {

@@ -53,8 +53,11 @@ export class ShoppingBasketEffects {
     ofType(ShoppingBasketActions.FETCH_SOPPINGBASKETPRODUCTS),
     switchMap(() => {
       return this.fakeApiService.getMyShoppingBasketProductList().pipe(
-        map((resData) => {
-          return new ShoppingBasketActions.SetShoppingBasketProducts(resData);
+        switchMap((resData) => {
+          return [
+            new ShoppingBasketActions.SetShoppingCompleted(false),
+            new ShoppingBasketActions.SetShoppingBasketProducts(resData),
+          ];
         }),
         catchError((errorRes) => {
           return handleError(errorRes);
@@ -118,6 +121,27 @@ export class ShoppingBasketEffects {
             ),
             new ShoppingBasketActions.OnSuccess(
               'Ürün başarıyla sepetinizden çıkartılmıştır.'
+            ),
+          ];
+        }),
+        catchError((errorRes) => {
+          return handleError(errorRes);
+        })
+      );
+    })
+  );
+
+  @Effect()
+  completeShoppingBasket = this.actions$.pipe(
+    ofType(ShoppingBasketActions.COMPLETE_SHOPPINGBASKET),
+    switchMap(() => {
+      return this.fakeApiService.completeShopping().pipe(
+        switchMap(() => {
+          return [
+            new ShoppingBasketActions.SetShoppingCompleted(true),
+            new ShoppingBasketActions.SetBasketProductCount(0),
+            new ShoppingBasketActions.OnSuccess(
+              'Alışverişiniz tamamlanmıştır. İyi alışverişler dileriz.'
             ),
           ];
         }),

@@ -25,6 +25,11 @@ export const UPDATE_PRODUCTREQUESTEDQUANTITY =
 
 export const DELETE_PRODUCT = '[Shopping Basket] Delete Product From Basket';
 
+export const COMPLETE_SHOPPINGBASKET =
+  '[Shopping Basket] Complete Shopping Basket';
+
+export const SET_SHOPPINGCOMPLETED = '[Shopping Basket] Shopping Completed';
+
 export const ON_ERROR = '[Shopping Basket] On Error';
 export const ON_SUCCESS = '[Shopping Basket] On Success';
 
@@ -82,6 +87,16 @@ export class UpdateProduct implements Action {
   ) {}
 }
 
+export class CompleteShoppingBasket implements Action {
+  readonly type = COMPLETE_SHOPPINGBASKET;
+}
+
+export class SetShoppingCompleted implements Action {
+  readonly type = SET_SHOPPINGCOMPLETED;
+
+  constructor(public payload: boolean) {}
+}
+
 export class OnError implements Action {
   readonly type = ON_ERROR;
 
@@ -101,6 +116,9 @@ export type ShoppingBasketActions =
   | SetShoppingBasketProducts
   | FethShoppingBasketSummary
   | SetShoppingBasketSummary
+  | DeleteProduct
   | UpdateProduct
+  | CompleteShoppingBasket
+  | SetShoppingCompleted
   | OnError
   | OnSuccess;
