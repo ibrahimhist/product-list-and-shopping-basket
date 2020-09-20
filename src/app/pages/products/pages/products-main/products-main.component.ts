@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+
 import { Product } from '../../shared/models/product.model';
-import { ProductService } from '../../shared/services/product.service';
+import { ShoppingBasketService } from '@app/pages/shopping-basket/shared/services/shopping-basket.service';
 
 import * as ProductsActions from 'src/app/pages/products/store/products.action';
 import * as fromProducts from 'src/app/pages/products/store/products.reducer';
@@ -24,7 +26,7 @@ export class ProductsMainComponent implements OnInit {
 
   constructor(
     private snackBar: MatSnackBar,
-    private productService: ProductService,
+    private shoppingBasketService: ShoppingBasketService,
     private store: Store<fromApp.AppState>
   ) {
     this.callbackFunForAddingBasket = (product: Product) =>
@@ -51,7 +53,7 @@ export class ProductsMainComponent implements OnInit {
     console.log(product);
     console.log(this.productExample);
 
-    this.productService.addToBasket(product).subscribe({
+    this.shoppingBasketService.addToBasket(product.id).subscribe({
       next: (response: any) => {
         this.snackBar.open('Ürün başarıyla sepetinize eklenmiştir.', 'Kapat', {
           duration: 2000,
